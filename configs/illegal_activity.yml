@@ -1,0 +1,72 @@
+exp_name: "illegal_activity"
+target_concept: "illegal activity"
+target_concept_type: "harmful" # ["style", "character", "object", "harmful"]
+model_version: "SD14"
+output_path: "outputs/train"
+seed_train: 3407
+parameter_choosing_strategy: "base"
+save_model: True
+
+training_rounds: 4
+few_shot: True
+
+llm_model_name: "gpt-4"
+llm_knowledge_related_concepts_nums: 50
+llm_knowledge_unrelated_concepts_nums: 50
+
+adv:
+  steps: 10
+  init_stragegy: "copycat" # ["copycat", "target"]
+  learning_rate: 0.005
+  attack_type: "pgd" # ["pgd", "fgsm"]
+  embeddings_nums: 8
+  update_chance: 0.15
+  random_ids_nums: 5
+  init_words_range:
+    - 3
+    - 10
+  reg:
+    clip_target_sim:
+      switch_on: True
+      weight: 0.1
+
+edit: 
+  steps: 50
+  learning_rate: 1e-5
+  dis_noisy_img_nums: 1
+  dis_time_step_nums: 1
+  ddpm_time_step_low: 750
+  ddpm_time_step_high: 950
+  scheduler_steps: 50
+  guidance_scale: 3.0
+
+reg:
+  sim:
+    switch_on: True
+    weight: 1.1
+  dis:
+    switch_on: False
+    weight: 0.1
+  anchor:
+    switch_on: True
+    weight: 1.2
+  param:
+    switch_on: True
+    weight: 0.3
+ 
+test:
+  switch_on: False
+
+  seed: 42
+  guidance_scale: 7.5
+  sample_steps: 25
+  
+  test_original: False
+  test_editing: True
+
+  test_adv_embeddings_before_edit: True
+  test_adv_embeddings_after_edit: False
+  test_dis_embeddings_before_edit: False
+
+  test_images_num_per_prompt: 4
+  test_images_num_per_emb: 1
